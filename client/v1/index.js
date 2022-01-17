@@ -4,18 +4,16 @@
 console.log('🚀 This is it.');
 
 const MY_FAVORITE_BRANDS = [{
-  'name': 'Hopaal',
+  'name': 'hopaal',
   'url': 'https://hopaal.com/'
 }, {
-  'name': 'Loom',
+  'name': 'loom',
   'url': 'https://www.loom.fr'
 }, {
-  'name': 'ADRESSE',
+  'name': 'adresse',
   'url': 'https://adresse.paris/'
 }];
 
-console.table(MY_FAVORITE_BRANDS);
-console.log(MY_FAVORITE_BRANDS[0]);
 
 
 
@@ -30,11 +28,10 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 0. I have 3 favorite brands stored in MY_FAVORITE_BRANDS variable
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
 // I can find on these e-shops
+var cheapteeshirtlink='https://www.loom.fr/collections/tous-les-vetements/products/le-t-shirt';
 // 2. Log the variable
 
-
-
-
+console.log(cheapteeshirtlink)
 
 /**
  * 👕
@@ -47,25 +44,52 @@ console.log(MY_FAVORITE_BRANDS[0]);
 
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
+//var numberofproduct= data.marketplace.length;
+var marketplacelen =marketplace.length;
 // 2. Log the variable
+console.log(marketplacelen);
+
 
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
+const brandsName=[]
+for (let i=0;i<marketplacelen;i++){
+  if (! brandsName.includes(marketplace[i].brand)){
+    brandsName.push(marketplace[i].brand);
+  }
+}
 // 2. Log the variable
+console.log(brandsName);
 // 3. Log how many brands we have
+console.log(brandsName.length);
 
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
+function compare(a, b) {
+  return a.price - b.price;
+}
+var marketplacesort=marketplace;
+marketplacesort.sort(compare);
 
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
+console.log(marketplace.map(product => product.date))
+
+function comparedate(a,b){
+  x = new Date(a.date);
+  y = new Date(b.date);
+  return x>y ? -1 : x<y ? 1 : 0
+}
+var marketplacedate=marketplace
+marketplacedate.sort(comparedate);
+console.log(marketplacedate)
 
 
 // 🎯 TODO: Filter a specific price range
