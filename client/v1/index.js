@@ -94,16 +94,25 @@ console.log(marketplacedate)
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
-// 2. Log the list
+marketplace50100=[];
+for (var i =0;i<marketplace.length;i++){
+  if (marketplace[i].price>=50 && marketplace[i].price<100){
+    marketplace50100.push(marketplace[i])
+  }
+}
+console.log(marketplace50100)
 
 
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
+pricetab=marketplace.map(product=>product.price)
+var avg=0
+for (var i=0;i<pricetab.length;i++){
+  avg+=pricetab[i]
+}
+avg=avg/pricetab.length
 // 2. Log the average
-
-
-
-
+console.log(avg)
 
 /**
  * 🏎
@@ -124,21 +133,55 @@ console.log(marketplacedate)
 //   ....
 //   'brand-name-n': [{...}, {...}, ..., {...}],
 // };
+const brands ={}
+for (var i =0;i<marketplace.length;i++){
+  if (marketplace[i].brand in brands){
+    brands[marketplace[i].brand].push(marketplace[i])
+  }
+  else {
+    brands[marketplace[i].brand]=[marketplace[i]]
+  }
+}
 //
 // 2. Log the variable
+console.log(brands);
 // 3. Log the number of products by brands
+listbrands=Object.keys(brands)
+for (var i =0;i<listbrands.length;i++){
+  br=listbrands[i]
+  console.log(br)
+  value =brands[br]
+  console.log(value.length)
+}
 
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
+function compareinverse(a, b) {
+  return -a.price + b.price;
+}
+brandssort=brands;
+for (var i =0;i<listbrands.length;i++){
+  brandssort[listbrands[i]].sort(compareinverse);
+}
 // 2. Log the sort
-
+console.log(brandssort);
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
+function comparedateinverse(a,b){
+  x = new Date(a.date);
+  y = new Date(b.date);
+  return x>y ? 1 : x<y ? -1 : 0
+}
+
+brandssortdate=brands;
+for (var i =0;i<listbrands.length;i++){
+  brandssortdate[listbrands[i]].sort(comparedateinverse);
+}
 // 2. Log the sort
 
-
+console.log(brandssortdate)
 
 
 
@@ -153,8 +196,9 @@ console.log(marketplacedate)
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
-
-
+p90index=Math.round(marketplacesort.length/10)
+p90=marketplacesort[p90index].price
+console.log(p90)
 
 
 /**
@@ -228,21 +272,61 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
+function newproduct(listproduct){
+  for (var i=0;i<listproduct.length;i++){7
+    x=new Date (listproduct[i].released)
+    var twoweek = new Date ("2022-01-04")
+      if (x<twoweek){
+        return false
+      }
+  }
+  return true
+}
+
+answer =newproduct(COTELE_PARIS);
+console.log(answer)
 
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
 
+function reasonable(listproduct){
+  for (var i=0;i<listproduct.length;i++){7
+    x=listproduct[i].price;
+      if (x>100){
+        return false
+      }
+  }
+  return true
+}
+answer = reasonable(COTELE_PARIS)
+console.log (answer)
+
+
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
 
+for (var i=0;i<COTELE_PARIS.length;i++){
+  if (COTELE_PARIS[i].uuid==`b56c6d88-749a-5b4c-b571-e5b5c6483131`){
+    find=COTELE_PARIS[i]
+  }
+}
+console.log(find)
+
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
+for (var i=0;i<COTELE_PARIS.length;i++){
+  if (COTELE_PARIS[i].uuid==`b56c6d88-749a-5b4c-b571-e5b5c6483131`){
+    delete COTELE_PARIS[i]
+  }
+}
 // 2. Log the new list of product
+
+console.log(COTELE_PARIS)
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -258,6 +342,9 @@ let jacket = blueJacket;
 jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
+console.log(blueJacket)
+console.log(jacket)
+
 // 2. What do you notice?
 
 blueJacket = {
@@ -267,9 +354,7 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-
-
-
+jacket.favorite = true;
 
 
 /**
