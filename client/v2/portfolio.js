@@ -8,6 +8,8 @@ let currentPagination = {};
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
+const selectBrands = document.querySelector('#brand-select')
+const selectShort = document.querySelector('#sort-select')
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
@@ -111,18 +113,30 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 selectShow.addEventListener('change', async (event) => {
-  const products = await(fetchProducts(1, parseInt(event.target.value)))
+  const products = await(fetchProducts(1, parseInt(event.target.value)));
   
     setCurrentProducts(products);
     render(currentProducts, currentPagination);
 });
-
 
 selectPage.addEventListener('change', event => {
   fetchProducts(parseInt(event.target.value),currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
+
+selectBrands.addEventListener('change',event=>{
+  const products = fetchProducts(currentPagination.pageCount,currentPagination$.pageSize);
+  setCurrentProducts(products);
+  prodbrands=[];
+  for (var i=0;i<currentProducts.length;i++){
+    if (currentProducts[i].brands==selectBrands.value || selectBrands.value=='all'){
+      prodbrands.push(currentProducts[i].brands);
+    }
+  }
+  render(prodbrands,currentPagination);
+
+})
 
 
 document.addEventListener('DOMContentLoaded', () =>
