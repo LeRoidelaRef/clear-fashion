@@ -120,38 +120,47 @@ selectShow.addEventListener('change', async (event) => {
     render(currentProducts, currentPagination);
 });
 
-selectPage.addEventListener('change', event => {
+// Feature 1
+selectPage.addEventListener('change', async(event) => {
   fetchProducts(parseInt(event.target.value),currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
 
-selectBrands.addEventListener('change',event=>{
-  const products = fetchProducts(currentPagination.pageCount,currentPagination$.pageSize);
-  setCurrentProducts(products);
-  prodbrands=[];
-  for (var i=0;i<currentProducts.length;i++){
-    if (currentProducts[i].brands==selectBrands.value || selectBrands.value=='all'){
-      prodbrands.push(currentProducts[i]);
-    }
-  }
-  render(prodbrands,currentPagination);
-
+// Feature 2
+selectBrands.addEventListener('change',async(event)=>
+{
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  if (event.target.value == "all"){
+}
+else{
+  products.result = products.result.filter(product => product.brand == event.target.value);
+}
+setCurrentProducts(products);
+render(currentProducts, currentPagination);
 })
 
-selectFilters.addEventListener('change',event => {
-  const products = fetchProducts(currentPagination.pageCount,currentPagination$.pageSize);
-  setCurrentProducts(products);
-  prodsfilter=[]
-  for (var i=0;i<currentProducts.length;i++){
-    if (selectFilters.value=='Reasonable price' && currentProducts[i].price<50){
-      probfilter.push(currentProducts[i])
-    }
-    if (selectFilters="Recently Released" && new Date(currentProducts[i].date)< new date('2022-01-17')){
-      probfilter.push(currentProducts[i])
-    }
+// Feature 3&4
+
+function comparedate(released){
+  var a=new Date('2022-01-17')
+  var b=new Date (released)
+  return a-b
+}
+
+selectFilters.addEventListener('change',async(event) => {
+
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+
+  if (event.target.value == "Reasonable Price"){
+    products.result = products.result.filter(product => product.price <= 50);
   }
-  render(prodsfilter,currentPagination)
+  if (event.target.value == "Recently Released"){
+    products.result = products.result.filter(product => comparedate(product.released) <= 0);
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination)
 
   
 })
