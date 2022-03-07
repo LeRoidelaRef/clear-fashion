@@ -8,31 +8,18 @@ const {'v5': uuidv5} = require('uuid');
  * @return {Object} restaurant
  */
 const parse = data => {
-  const $ = cheerio.load(data, {'xmlMode': true});
+  const $ = cheerio.load(data);
 
-  return $('.product-grid__item')
-    .map((i, element) => {
-      const link = `https://www.loom.fr${$(element)
-        .find('.product-title a')
-        .attr('href')}`;
+  return $('.item').map((i, element) => {
+    const link = $(element).find('.product-info h2.product-name').attr('href')
 
       return {
-        link,
-        'brand': 'loom',
-        'price': parseInt(
-          $(element)
-            .find('.money')
-            .text()
-        ),
-        'name': $(element)
-          .find('.product-title')
-          .text()
-          .trim()
-          .replace(/\s/g, ' '),
-        'photo': $(element)
-          .find('noscript img.product_card__image')
-          .attr('src'),
-        '_id': uuidv5(link, uuidv5.URL)
+        'link' : link,
+        'brand': 'montlimart',
+        'price': parseInt($(element).find('price').text()),
+        'name': $(element).find('.product-name').attr('title').text().trim().replace(/\s/g, ' '),
+        'photo': $(element).find('.productList-image').attr('src'),
+        '_id': 0,// a trouver
       };
     })
     .get();
