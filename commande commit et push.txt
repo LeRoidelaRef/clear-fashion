@@ -1,0 +1,6 @@
+ce mettre dans le cd du doc
+git status#tous les doc en rouge
+git add . 
+git status# tous les doc en vert
+git commit -m "commit name"
+git push origin master
