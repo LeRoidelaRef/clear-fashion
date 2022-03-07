@@ -104,6 +104,7 @@ for (var i =0;i<marketplace.length;i++){
 console.log(marketplace50100)
 
 
+<<<<<<< HEAD
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
 pricetab=marketplace.map(product=>product.price)
@@ -112,6 +113,10 @@ for (var i=0;i<pricetab.length;i++){
   avg+=pricetab[i]
 }
 avg=avg/pricetab.length
+=======
+// 🎯 TODO: Average price
+// 1. Determine the average price of the marketplace
+>>>>>>> 0bc96e776e5e0f4aecaa91740a5529f6cdf17953
 // 2. Log the average
 console.log(avg)
 

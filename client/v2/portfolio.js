@@ -6,7 +6,7 @@
 let currentProducts = [];
 let currentPagination = {};
 
-// inititiqte selectors
+// instantiate the selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const selectBrands = document.querySelector('#brand-select')
@@ -112,9 +112,9 @@ const render = (products, pagination) => {
 
 /**
  * Select the number of products to display
- * @type {[type]}
  */
 selectShow.addEventListener('change', async (event) => {
+<<<<<<< HEAD
   const products = await(fetchProducts(1, parseInt(event.target.value)));
   
     setCurrentProducts(products);
@@ -409,3 +409,17 @@ document.addEventListener('DOMContentLoaded', () =>
     .then(() => render(currentProducts, currentPagination))
 );
 >>>>>>> 04ce442e5622e4aaf44f9179a30387decc605272
+=======
+  const products = await fetchProducts(currentPagination.currentPage, parseInt(event.target.value));
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const products = await fetchProducts();
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+>>>>>>> 0bc96e776e5e0f4aecaa91740a5529f6cdf17953
