@@ -8,6 +8,9 @@ let currentPagination = {};
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
+const selectBrands = document.querySelector('#brand-select')
+const selectShort = document.querySelector('#sort-select')
+const selectFilters = document.querySelector('#filters-select')
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
@@ -110,14 +113,94 @@ const render = (products, pagination) => {
  * Select the number of products to display
  * @type {[type]}
  */
-selectShow.addEventListener('change', event => {
-  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+selectShow.addEventListener('change', async (event) => {
+  const products = await(fetchProducts(1, parseInt(event.target.value)));
+  
+    setCurrentProducts(products);
+    render(currentProducts, currentPagination);
+});
+
+// Feature 1
+selectPage.addEventListener('change', async(event) => {
+  fetchProducts(parseInt(event.target.value),currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
+
+// Feature 2
+selectBrands.addEventListener('change',async(event)=>
+{
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  if (event.target.value == "all"){
+}
+else{
+  products.result = products.result.filter(product => product.brand == event.target.value);
+}
+setCurrentProducts(products);
+render(currentProducts, currentPagination);
+})
+
+// Features 3&4
+
+function comparedate(released){
+  var a=new Date('2022-01-17')
+  var b=new Date (released)
+  return a-b
+}
+
+selectFilters.addEventListener('change',async(event) => {
+
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+
+  if (event.target.value == "Reasonable Price"){
+    products.result = products.result.filter(product => product.price <= 50);
+  }
+  if (event.target.value == "Recently Released"){
+    products.result = products.result.filter(product => comparedate(product.released) <= 0)
+  }
+
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination)
+})
+
+// Features 5&6
+function compareprice(a,b){
+  return a.price-b.price
+}
+function comparedate2(a,b){
+  a.released=new Date(a.released)
+  b.released=new Date(b.released)
+  return a.released-b.released
+}
+
+selectShort.addEventListener('change',async(event)=>{
+  console.log(event.target.value)
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  if (event.target.value == 'price-asc'){
+    products.result=products.result.sort(compareprice)
+  }
+  if (event.target.value == 'price-desc'){
+    products.result=products.result.sort(compareprice).reverse()
+  }
+  if (event.target.value == 'date-asc'){
+    products.result=products.result.sort(comparedate2)
+  }
+  if (event.target.value == 'date-desc'){
+    products.result=products.result.sort(comparedate2).reverse()
+  }
+  
+  setCurrentProducts(products);
+  render(currentProducts,currentPagination)
+
+})
+
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination))
 );
+
+
+
+

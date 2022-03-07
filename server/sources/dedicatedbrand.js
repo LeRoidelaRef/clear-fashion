@@ -11,20 +11,30 @@ const parse = data => {
 
   return $('.productList-container .productList')
     .map((i, element) => {
-      const name = $(element)
-        .find('.productList-title')
-        .text()
-        .trim()
-        .replace(/\s/g, ' ');
-      const price = parseInt(
-        $(element)
-          .find('.productList-price')
-          .text()
-      );
+      const link = `https://www.dedicatedbrand.com${$(element)
+    .find('.productList-link')
+    .attr('href')}`;
+  
 
-      return {name, price};
-    })
-    .get();
+  return {
+    'link': link,
+    'brand': 'dedicated',
+    'price': parseInt(
+      $(element)
+        .find('.productList-price')
+        .text()
+    ),
+    'name': $(element)
+      .find('.productList-title')
+      .text()
+      .trim()
+      .replace(/\s/g, ' '),
+    'photo': $(element)
+    .find('.productList-image img')
+    .attr('data-src'),
+  };
+  })
+  .get();
 };
 
 /**
@@ -32,7 +42,7 @@ const parse = data => {
  * @param  {[type]}  url
  * @return {Array|null}
  */
-module.exports.scrape = async url => {
+ module.exports.scrape = async url => {
   try {
     const response = await fetch(url);
 

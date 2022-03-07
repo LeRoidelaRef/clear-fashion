@@ -7,34 +7,19 @@ const {'v5': uuidv5} = require('uuid');
  * @param  {String} data - html response
  * @return {Object} restaurant
  */
- const parse = data => {
+const parse = data => {
   const $ = cheerio.load(data);
-
-  return $('.productList-container .productList')
-    .map((i, element) => {const link = `https://www.dedicatedbrand.com${$(element)
-    .find('.productList-link')
-    .attr('href')}`;
-
-  return {
-    'link': link,
-    'brand': 'dedicated',
-    'price': parseInt(
-      $(element)
-        .find('.productList-price')
-        .text()
-    ),
-    'name': $(element)
-      .find('.productList-title')
-      .text()
-      .trim()
-      .replace(/\s/g, ' '),
-    'photo': $(element)
-      .find('.productList-image img')
-      .attr('src'),
-    '_id': uuidv5(link, uuidv5.URL)
-  };
-  })
-  .get();
+  return $('.product-container').map((i, element) => {
+    const link = `${$(element).find('.product_img_link').attr('href')}`;
+      return {
+        'link' : link,
+        'brand': 'adresse',
+        'price': parseInt($(element).find('.price.product-price').text()),
+        'name': $(element).find('.product-name').attr('title'),
+        'photo': $(element).find('img').attr('src'),
+      };
+    })
+    .get();
 };
 
 /**
