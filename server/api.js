@@ -3,10 +3,10 @@ const express = require('express');
 const helmet = require('helmet');
 const { MongoClient } = require('mongodb');
 const products = require('./products.json')
-const MONGODB_DB_NAME= "ClearFashion"
+const MONGODB_DB_NAME= "clearfashion"
 require('dotenv').config();
 
-const MONGODB_URI = "mongodb+srv://thomas:<password>@cluster0.n0b5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const MONGODB_URI = "mongodb+srv://thomas:Thotor@cluster0.n0b5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 //const MONGODB_URI = process.env.MONGODB_URI;
 
 const PORT = 8092;
@@ -22,7 +22,7 @@ app.use(helmet());
 app.options('*', cors());
 
 app.get('/', (request, response) => {
-  response.send({'ack': true});
+  response.send({'test': true});
 });
 
 app.get('/products/search', (request, response) => {
