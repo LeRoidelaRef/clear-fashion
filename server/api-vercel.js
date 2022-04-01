@@ -9,7 +9,7 @@ const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
 
 app.get('/', (request, response) => {
-  response.send({'test': true});
+  response.send({'ack': true});
 });
 
 app.get('/products/search', async (request, response) => {
