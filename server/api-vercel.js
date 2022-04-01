@@ -1,17 +1,18 @@
+"use strict";
+
 const clientPromise = require('./mongodb-client');
 const ObjectId = require("mongodb").ObjectID;
 const express = require('express');
-const app =express()
+const app = express();
 
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
+const  DATABASE_NAME = "clear-fashion";
 
-const MONGODB_DB_NAME= "CLEARFASION";
-
-
-app.get('/', async(request, response) => {
-  const client = await clientPromise;
-  response.send({'ack': true, 'dbName': client.db().databaseName});
+app.get('/', async (request, response) => {
+    const client = await clientPromise;
+    console.log("Connected to `" + client.db().databaseName + "` database !");
+    response.send({'ack': true, 'dbConnection' : true, 'dbName': client.db().databaseName});
 });
 
 app.get('/products/search', async (request, response) => {
