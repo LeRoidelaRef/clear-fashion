@@ -20,8 +20,8 @@ app.get('/products/search', async (request, response) => {
   var filter ={};
   var brand;
   var price;
-  const size = parseInt(request.query.size, 10) || 12;
-  const page = parseInt(request.query.page, 10) || 1;
+  var size = 12;
+  var page = 1;
 
   const client = await clientPromise;
   const collection = client.db(MONGODB_DB_NAME).collection("products");
@@ -32,6 +32,14 @@ app.get('/products/search', async (request, response) => {
 
   if(request.query.price !== undefined){
     filter["price"]=request.query.price;
+  }
+
+  if (request.query.size!==undefined){
+    size=request.query.size
+  }
+
+  if (request.query.page!==undefined){
+    page=request.query.page
   }
 
   const {limit,offset} = calculateLimitAndOffset(page,size);
