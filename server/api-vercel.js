@@ -6,15 +6,12 @@ const app =experss()
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
 
-const MONGODB_DB_NAME= "CLEARFASION"
-
-
-
+const MONGODB_DB_NAME= "CLEARFASION";
 
 
 app.get('/', (request, response) => {
-  const client = await clientPromise;
-  response.send({'ack': true, 'dbco':true, 'dbname':client.db().databaseName});
+  
+  response.send({'ack': true, 'dbco':true});
 });
 
 app.get('/products/search', async (request, response) => {
