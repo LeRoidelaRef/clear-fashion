@@ -12,7 +12,7 @@ app.get('/', (request, response) => {
   response.send({'test': true});
 });
 
-app.get('/products/search', (request, response) => {
+app.get('/products/search', async (request, response) => {
 
   var filter ={};
   var limit = parseInt(request.query.limit);
@@ -43,7 +43,7 @@ app.get('/products/search', (request, response) => {
 });
 
 
-app.get('/products/:id', (request, response) => {
+app.get('/products/:id', async(request, response) => {
 
   const clien = await client
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
@@ -57,7 +57,7 @@ app.get('/products/:id', (request, response) => {
   });
 });
 
-app.get('/products/:', (request, response) => {
+app.get('/products/:', async(request, response) => {
 
   const clien = await client
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
