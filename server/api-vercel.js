@@ -1,7 +1,7 @@
 const clientPromise = require('./mongodb-client');
 const ObjectId = require("mongodb").ObjectID;
 const express = require('express');
-const app =experss()
+const app =express()
 
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
@@ -10,8 +10,7 @@ const MONGODB_DB_NAME= "CLEARFASION";
 
 
 app.get('/', (request, response) => {
-  
-  response.send({'ack': true, 'dbco':true});
+  response.send({'ack': true});
 });
 
 app.get('/products/search', async (request, response) => {
