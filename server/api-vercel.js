@@ -23,7 +23,7 @@ app.get('/products/search', async (request, response) => {
   const page = parseInt(request.query.page, 10) || 1;
 
   const client = await clientPromise;
-  const collection = clien.db(MONGODB_DB_NAME).collection("products");
+  const collection = client.db(MONGODB_DB_NAME).collection("products");
   
   if (request.query.brand !== undefined){
     filter['brand']=request.query.brand;
@@ -63,7 +63,7 @@ app.get('/products/', async(request, response) => {
 
   const client = await clientPromise;
   response.send({"aest":true});
-  //const collection = clien.db(MONGODB_DB_NAME).collection("products");
+  //const collection = client.db(MONGODB_DB_NAME).collection("products");
   
   /*collection.find({ }).toArray((error, result) => {
       if(error) {
