@@ -47,8 +47,8 @@ app.get('/products/search', async (request, response) => {
 
 app.get('/products/:id', async(request, response) => {
 
-  const clien = await client
-  const collection = clien.db(MONGODB_DB_NAME).collection("products");
+  const client = await clientPromise
+  const collection = client.db(MONGODB_DB_NAME).collection("products");
 
 
   collection.findOne({ "_id": request.params.id}, (error, result) => {
@@ -61,7 +61,7 @@ app.get('/products/:id', async(request, response) => {
 
 app.get('/products/', async(request, response) => {
 
-  const clien = await client;
+  const client = await clientPromise;
   response.send({"aest":true});
   //const collection = clien.db(MONGODB_DB_NAME).collection("products");
   
