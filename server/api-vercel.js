@@ -7,7 +7,7 @@ const app = express();
 
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
-const  MONGODB_DB_NAME = "CLEARFASION";
+const  MONGODB_DB_NAME = "clearfashion";
 
 app.get('/', async (request, response) => {
     const client = await clientPromise;
