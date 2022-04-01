@@ -58,16 +58,16 @@ app.get('/products/:id', async(request, response) => {
 
 app.get('/products/', async(request, response) => {
 
-  const clien = await client
-  console.log('test')
+  const clien = await client;
+  response.send({"aest":true});
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
-  console.log('test')
+  response.send({"zest":true});
 
   collection.find({ }).toArray((error, result) => {
       if(error) {
           return response.status(500).send(error);
       }
-      console.log('test')
+      response.send({"eest":true});
       response.send({result});
   });
 });
