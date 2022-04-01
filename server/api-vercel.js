@@ -2,7 +2,7 @@ const express = require('express');
 const MongoClient = require('mongodb');
 const products = require('./products.json')
 const MONGODB_DB_NAME= "clearfashion"
-const client = require('./mongodb-client.js')
+const client = require('./mongodb-client')
 const app = express();
 
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
@@ -58,7 +58,7 @@ app.get('/products/:id', async(request, response) => {
 
 app.get('/products/', async(request, response) => {
 
-  //const clien = await client;
+  const clien = await client;
   response.send({"aest":true});
   //const collection = clien.db(MONGODB_DB_NAME).collection("products");
   
