@@ -34,7 +34,7 @@ app.get('/products/search', async (request, response) => {
   }
 
   const {limit,offset} = calculateLimitAndOffset(page,size);
-  count = await collection.count()
+  const count = await collection.count()
 
   collection.find(filter).skip(offset).limit(limit).toArray((error,result)=>{
     if (error){
