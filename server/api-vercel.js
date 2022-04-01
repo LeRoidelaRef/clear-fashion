@@ -1,17 +1,18 @@
 "use strict";
 
+//import requires
 const clientPromise = require('./mongodb-client');
 const ObjectId = require("mongodb").ObjectID;
 const express = require('express');
-const app = express();
-
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
+//import const
+const app = express();
 const  MONGODB_DB_NAME = "clearfashion";
 
+
 app.get('/', async (request, response) => {
-    const client = await clientPromise;
-    response.send({'ack': true, 'dbConnection' : true, 'dbName': client.db().databaseName});
+    response.send({'ack': true});
 });
 
 app.get('/products/search', async (request, response) => {
@@ -71,5 +72,7 @@ app.get('/products/', async(request, response) => {
       response.send({result});
   });
 });
+
+
 
 module.exports = app;
