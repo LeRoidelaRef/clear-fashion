@@ -1,7 +1,6 @@
 const express = require('express');
 const MongoClient = require('mongodb');
-const products = require('./products.json')
-const MONGODB_DB_NAME= "clearfashion"
+const MONGODB_DB_NAME= "Cluster0"
 const client = require('./mongodb-client')
 const app = express();
 
