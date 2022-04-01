@@ -20,17 +20,17 @@ app.get('/products/search', async (request, response) => {
   var filter ={};
   var brand;
   var price;
-  const count = parseInt(request.query.size, 10) || 12;
+  const size = parseInt(request.query.size, 10) || 12;
   const page = parseInt(request.query.page, 10) || 1;
 
   const client = await clientPromise;
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
   
-  if (request.query.brand != undefined){
+  if (request.query.brand !== undefined){
     filter['brand']=request.query.brand;
   }
 
-  if(request.query.price != undefined){
+  if(request.query.price !== undefined){
     filter["price"]=request.query.price;
   }
 
@@ -40,7 +40,7 @@ app.get('/products/search', async (request, response) => {
     if (error){
       return response.status(500).send(error)
     }
-    response.send({"success":true,"data":{"result":result,"meta":paginate(page, collection.count(), result, limit)}})
+    response.send({"success":true,"data":{"result":result,"meta":paginate(page, await collection.count(), result, limit)}})
   });
 });
 
