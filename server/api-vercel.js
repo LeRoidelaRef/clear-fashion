@@ -15,7 +15,6 @@ app.get('/', (request, response) => {
 app.get('/products/search', async (request, response) => {
 
   var filter ={};
-  var limit = parseInt(request.query.limit);
   var brand;
   var price;
   const count = parseInt(request.query.size, 10) || 12;
