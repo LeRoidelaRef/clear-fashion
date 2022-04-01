@@ -1,14 +1,20 @@
+const clientPromise = require('./mongodb-client');
+const ObjectId = require("mongodb").ObjectID;
 const express = require('express');
-const MongoClient = require('mongodb');
-const MONGODB_DB_NAME= "Cluster0"
-const client = require('./mongodb-client')
-const app = express();
+const app =experss()
 
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
 
+const MONGODB_DB_NAME= "Cluster0"
+
+
+
+
+
 app.get('/', (request, response) => {
-  response.send({'ack': true});
+  const client = await clientPromise;
+  response.send({'ack': true, 'dbco':true, 'dbname':client.db().databaseName});
 });
 
 app.get('/products/search', async (request, response) => {
@@ -19,7 +25,7 @@ app.get('/products/search', async (request, response) => {
   const count = parseInt(request.query.size, 10) || 12;
   const page = parseInt(request.query.page, 10) || 1;
 
-  const clien = await client;
+  const client = await clientPromise;
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
   
   if (request.query.brand != undefined){
