@@ -6,7 +6,7 @@ const app =experss()
 const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
 
-const MONGODB_DB_NAME= "cluster0"
+const MONGODB_DB_NAME= "clear-fashion"
 
 
 
