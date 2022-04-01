@@ -9,7 +9,7 @@ const { calculateLimitAndOffset, paginate } = require('paginate-info');
 const MONGODB_DB_NAME= "CLEARFASION";
 
 
-app.get('/', (request, response) => {
+app.get('/', async(request, response) => {
   const client = await clientPromise;
   response.send({'ack': true, 'dbName': client.db().databaseName});
 });
