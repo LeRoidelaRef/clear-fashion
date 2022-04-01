@@ -1,14 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-
-const { MongoClient } = require('mongodb');
-
-require('dotenv').config();
-const MONGODB_DB_NAME= "clearfashion"
-const MONGODB_URI="mongodb+srv://thomas:Thotor@cluster0.n0b5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
-const { calculateLimitAndOffset, paginate } = require('paginate-info');
+const db = require('./db');
 
 const PORT = 8092;
 
@@ -22,41 +15,32 @@ app.use(helmet());
 
 app.options('*', cors());
 
+const { calculateLimitAndOffset, paginate } = require('paginate-info');
+
 app.get('/', (request, response) => {
-  response.send({'test': true});
+  response.send({'ack': true});
 });
 
 app.get('/products/search', (request, response) => {
 
   var filter ={};
-  var limit = parseInt(request.query.limit);
-  var brand;
-  var price;
+  var brand = parseInt(request.query.limit);
+  var price = parseInt(request.query.limit);
   const limit = parseInt(request.query.size, 10) || 12;
   const page = parseInt(request.query.page, 10) || 1;
-
-  const client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
-  const db =  client.db(MONGODB_DB_NAME);
-  const collection = db.collection('products');
-
   
-  if (request.query.brand != undefined){
+  if (brand != undefined){
     filter['brand']=request.query.brand;
   }
 
-  if(request.query.price != undefined){
+  if(price != undefined){
     filter["price"]=request.query.price;
   }
 
-  collection.find(filter).toArray((error,result)=>{
-    if (error){
-      return response.status(500).send(error)
-    }
+  const {offset } = calculateLimitAndOffset(page, limit);
 
-    const result = await collection.find(filter).skip(offset).limit(limit).toArray();
-    const count =await collection.find(filter).count;
+    const result = await db.find(filter).skip(offset).limit(limit).toArray();
     response.send({"success":true,"data":{"result":result,"meta":paginate(page, collection.count(), result, limit)}})
-  });
 });
 
 
