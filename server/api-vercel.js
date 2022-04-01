@@ -56,7 +56,7 @@ app.get('/products/:id', async(request, response) => {
   });
 });
 
-app.get('/products/:', async(request, response) => {
+app.get('/products/', async(request, response) => {
 
   const clien = await client
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
@@ -66,7 +66,7 @@ app.get('/products/:', async(request, response) => {
       if(error) {
           return response.status(500).send(error);
       }
-      response.send({"test4":true});
+      response.send({result});
   });
 });
 
