@@ -21,7 +21,7 @@ app.get('/products/search', (request, response) => {
   const count = parseInt(request.query.size, 10) || 12;
   const page = parseInt(request.query.page, 10) || 1;
 
-  const clien = await client
+  const clien = await client;
   const collection = clien.db(MONGODB_DB_NAME).collection("products");
   
   if (request.query.brand != undefined){
