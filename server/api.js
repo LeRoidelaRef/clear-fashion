@@ -1,11 +1,14 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
+
 const { MongoClient } = require('mongodb');
-const products = require('./products.json')
-const MONGODB_DB_NAME= "clearfashion"
+
 require('dotenv').config();
-const client = require('./mongodb-client.js')
+const MONGODB_DB_NAME= "clearfashion"
+const MONGODB_URI="mongodb+srv://thomas:Thotor@cluster0.n0b5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
+const { calculateLimitAndOffset, paginate } = require('paginate-info');
 
 const PORT = 8092;
 
@@ -29,6 +32,13 @@ app.get('/products/search', (request, response) => {
   var limit = parseInt(request.query.limit);
   var brand;
   var price;
+  const limit = parseInt(request.query.size, 10) || 12;
+  const page = parseInt(request.query.page, 10) || 1;
+
+  const client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
+  const db =  client.db(MONGODB_DB_NAME);
+  const collection = db.collection('products');
+
   
   if (request.query.brand != undefined){
     filter['brand']=request.query.brand;
@@ -42,7 +52,10 @@ app.get('/products/search', (request, response) => {
     if (error){
       return response.status(500).send(error)
     }
-    response.send(result)
+
+    const result = await collection.find(filter).skip(offset).limit(limit).toArray();
+    const count =await collection.find(filter).count;
+    response.send({"success":true,"data":{"result":result,"meta":paginate(page, collection.count(), result, limit)}})
   });
 });
 
