@@ -10,7 +10,8 @@ const MONGODB_DB_NAME= "CLEARFASION";
 
 
 app.get('/', (request, response) => {
-  response.send({'ack': true});
+  const client = await clientPromise;
+  response.send({'ack': true, 'dbName': client.db().databaseName});
 });
 
 app.get('/products/search', async (request, response) => {
