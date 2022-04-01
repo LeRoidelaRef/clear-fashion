@@ -11,7 +11,6 @@ const  DATABASE_NAME = "clear-fashion";
 
 app.get('/', async (request, response) => {
     const client = await clientPromise;
-    console.log("Connected to `" + client.db().databaseName + "` database !");
     response.send({'ack': true, 'dbConnection' : true, 'dbName': client.db().databaseName});
 });
 
@@ -35,12 +34,13 @@ app.get('/products/search', async (request, response) => {
   }
 
   const {limit,offset} = calculateLimitAndOffset(page,size);
+  count = await collection.count()
 
   collection.find(filter).skip(offset).limit(limit).toArray((error,result)=>{
     if (error){
       return response.status(500).send(error)
     }
-    response.send({"success":true,"data":{"result":result,"meta":paginate(page, await collection.count(), result, limit)}})
+    response.send({"success":true,"data":{"result":result,"meta":paginate(page, count, result, limit)}})
   });
 });
 
