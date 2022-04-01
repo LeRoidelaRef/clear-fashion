@@ -62,16 +62,14 @@ app.get('/products/:id', async(request, response) => {
 app.get('/products/', async(request, response) => {
 
   const client = await clientPromise;
-  response.send({"aest":true});
-  //const collection = client.db(MONGODB_DB_NAME).collection("products");
+  const collection = client.db(MONGODB_DB_NAME).collection("products");
   
-  /*collection.find({ }).toArray((error, result) => {
+  collection.find({ }).toArray((error, result) => {
       if(error) {
           return response.status(500).send(error);
       }
-      response.send({"eest":true});
       response.send({result});
-  });*/
+  });
 });
 
 module.exports = app;
