@@ -66,7 +66,7 @@ app.get('/products/:', async(request, response) => {
       if(error) {
           return response.status(500).send(error);
       }
-      response.send(result);
+      response.send({"test4":true});
   });
 });
 
