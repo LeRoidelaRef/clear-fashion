@@ -1,7 +1,13 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
-const db = require('./db');
+
+const { MongoClient } = require('mongodb');
+const  MONGODB_DB_NAME = "clearfashion";
+
+client = new MongoClient(uri, options).connect();
+const collection = client.db(MONGODB_DB_NAME).collection("products");
+const uri = "mongodb+srv://thomas:Thotor@cluster0.n0b5i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 const PORT = 8092;
 
@@ -15,54 +21,60 @@ app.use(helmet());
 
 app.options('*', cors());
 
-const { calculateLimitAndOffset, paginate } = require('paginate-info');
-
 app.get('/', (request, response) => {
   response.send({'ack': true});
 });
 
-app.get('/products/search', (request, response) => {
+app.get('/products/search', async (request, response) => {
 
   var filter ={};
-  var brand = parseInt(request.query.limit);
-  var price = parseInt(request.query.limit);
-  const limit = parseInt(request.query.size, 10) || 12;
-  const page = parseInt(request.query.page, 10) || 1;
+  var brand;
+  var price;
+  var size = 12;
+  var page = 1;
   
-  if (brand != undefined){
+  if (request.query.brand !== undefined){
     filter['brand']=request.query.brand;
   }
 
-  if(price != undefined){
+  if(request.query.price !== undefined){
     filter["price"]=request.query.price;
   }
 
-  const {offset } = calculateLimitAndOffset(page, limit);
+  if (request.query.size!==undefined){
+    size=request.query.size
+  }
 
-    const result = await db.find(filter).skip(offset).limit(limit).toArray();
-    response.send({"success":true,"data":{"result":result,"meta":paginate(page, collection.count(), result, limit)}})
+  if (request.query.page!==undefined){
+    page=request.query.page
+  }
+
+  const {limit,offset} = calculateLimitAndOffset(page,size);
+  const count = await collection.count()
+
+  collection.find(filter).skip(offset).limit(limit).toArray((error,result)=>{
+    if (error){
+      return response.status(500).send(error)
+    }
+    response.send({"success":true,"data":{"result":result,"meta":paginate(page, count, result, limit)}})
+  });
 });
 
 
-app.get('/products/:id', (request, response) => {
-  collection.findOne({ "_id": request.params.id}, (error, result) => {
+app.get('/products/', async(request, response) => {
+
+  collection.find({ }).toArray((error, result) => {
       if(error) {
           return response.status(500).send(error);
       }
-      response.send(result);
+      response.send({result});
   });
 });
 
-app.listen(PORT, () => {
-  MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true}, (error, client)=>{
-    if(error) {
-      throw error;
-  }
-    db = client.db(MONGODB_DB_NAME);
-    collection = db.collection("products");
-    console.log("Connected to `" + MONGODB_DB_NAME + "`!");
-  });
 
-});
+
+
+
+app.listen(PORT);
 
 console.log(`📡 Running on port ${PORT}`);
